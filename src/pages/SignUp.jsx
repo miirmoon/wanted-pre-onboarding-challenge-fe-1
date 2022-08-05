@@ -1,7 +1,11 @@
+import { apiSignUp } from "apis/auth";
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { validateEmail, validatePw } from "utils/validate";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const [inputEmail, setInputEmail] = useState("");
   const [inputPw, setInputPw] = useState("");
   const [inputPwConfirm, setInputPwConfirm] = useState("");
@@ -56,6 +60,17 @@ export default function SignUp() {
     }
   }, [inputPw, inputPwConfirm]);
 
+  const signUp = () => {
+    apiSignUp(inputEmail, inputPw)
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
+  };
+
   return (
     <section>
       <input
@@ -82,7 +97,9 @@ export default function SignUp() {
       />
       <div>{textValidPwConfirm}</div>
 
-      <button disabled={!isValidAll}>회원가입</button>
+      <button disabled={!isValidAll} onClick={signUp}>
+        회원가입
+      </button>
     </section>
   );
 }

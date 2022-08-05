@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { validateEmail } from "utils/validate";
+import { apiLogin } from "apis/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -46,6 +48,17 @@ export default function Login() {
     navigate("/signup");
   };
 
+  const login = () => {
+    apiLogin(inputEmail, inputPw)
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
+  };
+
   return (
     <section>
       <input
@@ -64,7 +77,9 @@ export default function Login() {
       />
       <div>{textValidPw}</div>
 
-      <button disabled={!isValidAll}>로그인</button>
+      <button disabled={!isValidAll} onClick={login}>
+        로그인
+      </button>
       <button onClick={moveToSignUp}>회원가입하러 가기</button>
     </section>
   );
