@@ -1,7 +1,14 @@
-import { apiSignUp } from "apis/auth";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { apiSignUp } from "apis/auth";
 import { validateEmail, validatePw } from "utils/validate";
+
+import styled from "styled-components";
+import theme from "styles/theme";
+import { SectionTitle } from "components/layout/SectionTitle";
+import { BasicButton, ColorButton } from "components/ButtonSet";
+import { BasicInput } from "components/InputSet";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -72,34 +79,60 @@ export default function SignUp() {
   };
 
   return (
-    <section>
-      <input
+    <div>
+      <SectionTitle>회원가입</SectionTitle>
+      <BasicInput
         type="text"
         value={inputEmail}
         onChange={handleInputEmail}
         placeholder="이메일"
       />
-      <div>{textValidEmail}</div>
+      <StyledText>{textValidEmail}</StyledText>
 
-      <input
+      <BasicInput
         type="password"
         value={inputPw}
         onChange={handleInputPw}
         placeholder="비밀번호"
       />
-      <div>{textValidPw}</div>
+      <StyledText>{textValidPw}</StyledText>
 
-      <input
+      <BasicInput
         type="password"
         value={inputPwConfirm}
         onChange={handleInputPwConfirm}
         placeholder="비밀번호 확인"
       />
-      <div>{textValidPwConfirm}</div>
+      <StyledText>{textValidPwConfirm}</StyledText>
 
-      <button disabled={!isValidAll} onClick={signUp}>
-        회원가입
-      </button>
-    </section>
+      <ButtonBox>
+        <ColorButton
+          color={isValidAll ? theme.colors.blue : theme.colors.grey10}
+          disabled={!isValidAll}
+          onClick={signUp}
+        >
+          회원가입
+        </ColorButton>
+        <BasicButton>이미 가입했다면? 로그인하러 가기</BasicButton>
+      </ButtonBox>
+    </div>
   );
 }
+
+const ButtonBox = styled.div`
+  text-align: center;
+
+  ${ColorButton} {
+    width: 100%;
+    margin-bottom: ${(props) => props.theme.boxSize.micro};
+    padding: ${(props) => props.theme.boxSize.micro};
+    font-size: ${(props) => props.theme.fontSize.normal};
+  }
+`;
+
+const StyledText = styled.div`
+  margin: ${(props) => props.theme.boxSize.micro} 0
+    ${(props) => props.theme.boxSize.small} 0;
+  font-size: ${(props) => props.theme.fontSize.small};
+  color: ${(props) => props.theme.colors.red};
+`;

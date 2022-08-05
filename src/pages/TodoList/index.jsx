@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
+import styled from "styled-components";
+import theme from "styles/theme";
 
 import Todos from "./components/Todos";
 import TodoDetail from "./components/TodoDetail";
 import TodoForm from "./components/TodoForm";
+import Modal from "components/Modal";
+import { ColorButton } from "components/ButtonSet";
 
 import { apiGetTodoById, apiGetTodos } from "apis/todos";
 
 export const FORM_FLAG = {
-  CREATE: "create",
-  UPDATE: "update",
+  CREATE: "할 일 추가",
+  UPDATE: "할 일 수정",
 };
 Object.freeze(FORM_FLAG);
 
 export default function TodoList() {
   const { todoId } = useParams();
-  const navigate = useNavigate();
 
   const [todoList, setTodoList] = useState([]);
   const [todoDetail, setTodoDetail] = useState(null);
@@ -29,11 +33,6 @@ export default function TodoList() {
     if (todoId) getTodoDetail();
     else setTodoDetail(null);
   }, [todoId]);
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/auth");
-  };
 
   const getTodoList = () => {
     apiGetTodos().then((data) => {
@@ -68,24 +67,34 @@ export default function TodoList() {
 
   return (
     <section>
-      <button onClick={openCreateForm}>추가</button>
+      <AlignRight>
+        <ColorButton color={theme.colors.blue} onClick={openCreateForm}>
+          할 일 추가
+        </ColorButton>
+      </AlignRight>
       {isOpenForm && (
-        <TodoForm
-          todo={todoDetail}
-          flag={formFlag}
-          onUpdate={onUpdate}
-          onClose={closeForm}
-        />
+        <Modal onClose={closeForm}>
+          <TodoForm
+            todo={todoDetail}
+            flag={formFlag}
+            onUpdate={onUpdate}
+            onClose={closeForm}
+          />
+        </Modal>
       )}
 
       <Todos todoList={todoList} />
-      <TodoDetail
-        todo={todoDetail}
-        onDelete={getTodoList}
-        onClickUpdate={openUpdateForm}
-      />
-
-      <button onClick={logout}>로그아웃</button>
+      {todoDetail && (
+        <TodoDetail
+          todo={todoDetail}
+          onDelete={getTodoList}
+          onClickUpdate={openUpdateForm}
+        />
+      )}
     </section>
   );
 }
+
+const AlignRight = styled.div`
+  text-align: right;
+`;

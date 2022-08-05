@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { validateEmail } from "utils/validate";
 import { apiLogin } from "apis/auth";
 
+import styled from "styled-components";
+import theme from "styles/theme";
+import { SectionTitle } from "components/layout/SectionTitle";
+import { ColorButton } from "components/ButtonSet";
+import { BasicInput } from "components/InputSet";
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -60,27 +66,52 @@ export default function Login() {
   };
 
   return (
-    <section>
-      <input
+    <div>
+      <SectionTitle>로그인</SectionTitle>
+      <BasicInput
         type="text"
         value={inputEmail}
         onChange={handleInputEmail}
         placeholder="이메일"
       />
-      <div>{textValidEmail}</div>
+      <StyledText>{textValidEmail}</StyledText>
 
-      <input
+      <BasicInput
         type="password"
         value={inputPw}
         onChange={handleInputPw}
         placeholder="비밀번호"
       />
-      <div>{textValidPw}</div>
+      <StyledText>{textValidPw}</StyledText>
 
-      <button disabled={!isValidAll} onClick={login}>
-        로그인
-      </button>
-      <button onClick={moveToSignUp}>회원가입하러 가기</button>
-    </section>
+      <ButtonBox>
+        <ColorButton
+          color={isValidAll ? theme.colors.blue : theme.colors.grey10}
+          disabled={!isValidAll}
+          onClick={login}
+        >
+          로그인
+        </ColorButton>
+        <ColorButton color={theme.colors.red} onClick={moveToSignUp}>
+          회원가입하러 가기
+        </ColorButton>
+      </ButtonBox>
+    </div>
   );
 }
+
+const ButtonBox = styled.div`
+  ${ColorButton} {
+    width: 100%;
+    margin-bottom: ${(props) => props.theme.boxSize.micro};
+    padding: ${(props) => props.theme.boxSize.micro};
+    font-size: ${(props) => props.theme.fontSize.normal};
+  }
+`;
+
+const StyledText = styled.div`
+  margin: ${(props) => props.theme.boxSize.micro} 0
+    ${(props) => props.theme.boxSize.small} 0;
+  font-size: ${(props) => props.theme.fontSize.small};
+  color: ${(props) => props.theme.colors.red};
+`;
