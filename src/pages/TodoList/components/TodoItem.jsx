@@ -1,3 +1,3 @@
-export default function TodoItem() {
-  return <div>할일</div>;
+export default function TodoItem({ todo }) {
+  return <li>{todo.title}</li>;
 }

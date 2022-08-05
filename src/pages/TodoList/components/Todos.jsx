@@ -1,9 +1,13 @@
 import TodoItem from "./TodoItem";
 
-export default function Todos() {
+export default function Todos({ todoList }) {
   return (
     <div>
-      <TodoItem />
+      <ul>
+        {todoList.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
+      </ul>
     </div>
   );
 }

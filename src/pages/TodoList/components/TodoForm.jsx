@@ -1,8 +1,7 @@
 import { useState } from "react";
-
 import { apiCreateTodo } from "apis/todos";
 
-export default function TodoForm() {
+export default function TodoForm({ onCreate }) {
   const [inputTitle, setInputTitle] = useState("");
   const [inputContent, setInputContent] = useState("");
 
@@ -15,8 +14,8 @@ export default function TodoForm() {
   };
 
   const createTodo = () => {
-    apiCreateTodo(inputTitle, inputContent).then((data) => {
-      console.log(data);
+    apiCreateTodo(inputTitle, inputContent).then(() => {
+      onCreate();
     });
   };
 
