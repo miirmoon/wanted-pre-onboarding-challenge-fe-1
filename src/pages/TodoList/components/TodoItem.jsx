@@ -1,3 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 export default function TodoItem({ todo }) {
-  return <li>{todo.title}</li>;
+  const navigate = useNavigate();
+
+  const onClickTodo = () => {
+    navigate(`/${todo.id}`);
+  };
+
+  return <li onClick={onClickTodo}>{todo.title}</li>;
 }

@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Todos from "./components/Todos";
 import TodoDetail from "./components/TodoDetail";
 import TodoForm from "./components/TodoForm";
 
-import { apiGetTodos } from "apis/todos";
+import { apiGetTodoById, apiGetTodos } from "apis/todos";
 
 export default function TodoList() {
+  const { todoId } = useParams();
   const navigate = useNavigate();
 
   const [todoList, setTodoList] = useState([]);
+  const [todoDetail, setTodoDetail] = useState(null);
+
   const [isOpenForm, setIsOpenForm] = useState(false);
 
   useEffect(() => {
     getTodoList();
   }, []);
+
+  useEffect(() => {
+    if (todoId) {
+      getTodoDetail();
+    }
+  }, [todoId]);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -25,6 +34,12 @@ export default function TodoList() {
   const getTodoList = () => {
     apiGetTodos().then((data) => {
       setTodoList(data.data);
+    });
+  };
+
+  const getTodoDetail = () => {
+    apiGetTodoById(todoId).then((data) => {
+      setTodoDetail(data.data);
     });
   };
 
@@ -42,7 +57,7 @@ export default function TodoList() {
       {isOpenForm && <TodoForm onCreate={getTodoList} />}
 
       <Todos todoList={todoList} />
-      <TodoDetail />
+      <TodoDetail todo={todoDetail} />
 
       <button onClick={logout}>로그아웃</button>
     </section>

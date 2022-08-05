@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route element={<RequireAuth />}>
           <Route path="/" element={<TodoList />} />
+          <Route path="/:todoId" element={<TodoList />} />
         </Route>
         <Route path="/auth" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
