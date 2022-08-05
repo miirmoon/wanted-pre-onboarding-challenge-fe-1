@@ -78,6 +78,10 @@ export default function SignUp() {
       });
   };
 
+  const moveToLogin = () => {
+    navigate("/auth");
+  };
+
   return (
     <div>
       <SectionTitle>회원가입</SectionTitle>
@@ -113,7 +117,9 @@ export default function SignUp() {
         >
           회원가입
         </ColorButton>
-        <BasicButton>이미 가입했다면? 로그인하러 가기</BasicButton>
+        <BasicButton onClick={moveToLogin}>
+          이미 가입했다면? 로그인하러 가기
+        </BasicButton>
       </ButtonBox>
     </div>
   );

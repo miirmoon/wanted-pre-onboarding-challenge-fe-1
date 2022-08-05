@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import styled from "styled-components";
 import theme from "styles/theme";
@@ -8,7 +8,7 @@ import Todos from "./components/Todos";
 import TodoDetail from "./components/TodoDetail";
 import TodoForm from "./components/TodoForm";
 import Modal from "components/Modal";
-import { ColorButton } from "components/ButtonSet";
+import { BasicButton, ColorButton } from "components/ButtonSet";
 
 import { apiGetTodoById, apiGetTodos } from "apis/todos";
 
@@ -20,6 +20,7 @@ Object.freeze(FORM_FLAG);
 
 export default function TodoList() {
   const { todoId } = useParams();
+  const navigate = useNavigate();
 
   const [todoList, setTodoList] = useState([]);
   const [todoDetail, setTodoDetail] = useState(null);
@@ -65,13 +66,21 @@ export default function TodoList() {
     setIsOpenForm(false);
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth");
+  };
+
   return (
     <section>
-      <AlignRight>
+      <ButtonBox>
+        <BasicButton color={theme.colors.grey15} onClick={logout}>
+          로그아웃
+        </BasicButton>
         <ColorButton color={theme.colors.blue} onClick={openCreateForm}>
           할 일 추가
         </ColorButton>
-      </AlignRight>
+      </ButtonBox>
       {isOpenForm && (
         <Modal onClose={closeForm}>
           <TodoForm
@@ -95,6 +104,7 @@ export default function TodoList() {
   );
 }
 
-const AlignRight = styled.div`
-  text-align: right;
+const ButtonBox = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
