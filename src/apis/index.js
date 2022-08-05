@@ -8,3 +8,17 @@ export const apiAxios = axios.create({
     "Content-type": "application/json",
   },
 });
+
+export const authApiAxios = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-type": "application/json",
+  },
+});
+
+authApiAxios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  config.headers.Authorization = token;
+
+  return config;
+});
