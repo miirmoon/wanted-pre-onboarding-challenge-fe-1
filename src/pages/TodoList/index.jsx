@@ -7,6 +7,12 @@ import TodoForm from "./components/TodoForm";
 
 import { apiGetTodoById, apiGetTodos } from "apis/todos";
 
+export const FORM_FLAG = {
+  CREATE: "create",
+  UPDATE: "update",
+};
+Object.freeze(FORM_FLAG);
+
 export default function TodoList() {
   const { todoId } = useParams();
   const navigate = useNavigate();
@@ -15,12 +21,11 @@ export default function TodoList() {
   const [todoDetail, setTodoDetail] = useState(null);
 
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const [formFlag, setFormFlag] = useState(FORM_FLAG.CREATE);
 
   useEffect(() => {
     getTodoList();
-  }, []);
 
-  useEffect(() => {
     if (todoId) getTodoDetail();
     else setTodoDetail(null);
   }, [todoId]);
@@ -42,21 +47,43 @@ export default function TodoList() {
     });
   };
 
-  const openFormModal = () => {
+  const onUpdate = () => {
+    getTodoList();
+    getTodoDetail();
+  };
+
+  const openCreateForm = () => {
+    setFormFlag(FORM_FLAG.CREATE);
     setIsOpenForm(true);
   };
 
-  const closeFormModal = () => {
+  const openUpdateForm = () => {
+    setFormFlag(FORM_FLAG.UPDATE);
+    setIsOpenForm(true);
+  };
+
+  const closeForm = () => {
     setIsOpenForm(false);
   };
 
   return (
     <section>
-      <button onClick={openFormModal}>추가</button>
-      {isOpenForm && <TodoForm onCreate={getTodoList} />}
+      <button onClick={openCreateForm}>추가</button>
+      {isOpenForm && (
+        <TodoForm
+          todo={todoDetail}
+          flag={formFlag}
+          onUpdate={onUpdate}
+          onClose={closeForm}
+        />
+      )}
 
       <Todos todoList={todoList} />
-      <TodoDetail todo={todoDetail} onDelete={getTodoList} />
+      <TodoDetail
+        todo={todoDetail}
+        onDelete={getTodoList}
+        onClickUpdate={openUpdateForm}
+      />
 
       <button onClick={logout}>로그아웃</button>
     </section>
