@@ -1,4 +1,16 @@
-export default function TodoDetail({ todo }) {
+import { useNavigate } from "react-router-dom";
+import { apiDeleteTodo } from "apis/todos";
+
+export default function TodoDetail({ todo, onDelete }) {
+  const navigate = useNavigate();
+
+  const deleteTodo = () => {
+    apiDeleteTodo(todo.id).then(() => {
+      onDelete();
+      navigate("/");
+    });
+  };
+
   return (
     <section>
       {todo && (
@@ -7,7 +19,7 @@ export default function TodoDetail({ todo }) {
           <div>{todo.content}</div>
 
           <button>수정</button>
-          <button>삭제</button>
+          <button onClick={deleteTodo}>삭제</button>
         </>
       )}
     </section>

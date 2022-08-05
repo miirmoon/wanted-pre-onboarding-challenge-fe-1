@@ -12,4 +12,6 @@ export const apiCreateTodo = async (title, content) => {
   return (await authApiAxios.post(`/todos`, { title, content })).data;
 };
 
+export const apiDeleteTodo = async (id) => {
+  return (await authApiAxios.delete(`/todos/${id}`)).data;
 };

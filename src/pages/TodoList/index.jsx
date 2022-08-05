@@ -21,9 +21,8 @@ export default function TodoList() {
   }, []);
 
   useEffect(() => {
-    if (todoId) {
-      getTodoDetail();
-    }
+    if (todoId) getTodoDetail();
+    else setTodoDetail(null);
   }, [todoId]);
 
   const logout = () => {
@@ -57,7 +56,7 @@ export default function TodoList() {
       {isOpenForm && <TodoForm onCreate={getTodoList} />}
 
       <Todos todoList={todoList} />
-      <TodoDetail todo={todoDetail} />
+      <TodoDetail todo={todoDetail} onDelete={getTodoList} />
 
       <button onClick={logout}>로그아웃</button>
     </section>
