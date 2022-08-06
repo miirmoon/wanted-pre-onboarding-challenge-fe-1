@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# TodoList
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## :: 원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제
 
-## Available Scripts
+> 과제 상세 - [API Repository](https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api) 내 README.md 참고
 
-In the project directory, you can run:
+> 신미래 소개 [Notion](https://kindly-arithmetic-fb1.notion.site/d2b6e66b49354b16aec4c0d667bdd837)
 
-### `npm start`
+## 1. 기술 스택 🛠
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React, Styled-component
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 2. 구현 내용 ✈
 
-### `npm test`
+### Assignment 1 - Login / SignUp
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 1) Login / 로그인
 
-### `npm run build`
+- `/auth` 경로
+- 이메일, 비밀번호 입력창, 제출 버튼으로 구성
+- 이메일 조건 검사
+- 이메일, 비밀번호가 모두 입력되고 조건을 만족하면 제출 버튼 활성화
+- 정상적으로 로그인이 되면 토큰을 로컬 스토리지에 저장하고 루트 경로로 이동
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![로그인 화면](https://user-images.githubusercontent.com/81166378/183234513-be148df0-0d28-4ca5-815c-eb8b7612648b.gif)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<br />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 2) SignUp / 회원가입
 
-### `npm run eject`
+- `/signup` 경로
+- 이메일, 비밀번호, 비밀번호 확인 입력창, 제출 버튼으로 구성
+- 이메일 조건 검사
+- 비밀번호 조건 검사(8자리 이상)
+- 모든 입력창이 입력되고 조건을 만족하면 제출 버튼 활성화
+- 정상적으로 회원가입이 완료되면 로그인 처리 후 루트 경로로 이동
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![회원가입](https://user-images.githubusercontent.com/81166378/183234533-3c150a2f-a4c4-47f8-a3e1-dc27f3097989.gif)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br />
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Assignment 2 - Todo List
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### 1) Todo 목록 조회
 
-## Learn More
+- 목록 / 상세 영역으로 나누어 구현
+- 한 화면 내에서 Todo List와 개별 Todo의 상세 확인
+- 새로고침했을 때 현재 상태 유지
+- 개별 Todo 조회 순서에 따라 페이지 뒤로가기를 통해 조회
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![할 일 목록 조회](https://user-images.githubusercontent.com/81166378/183240150-ca654d12-2396-4b1d-a5a8-fb3e7d446a00.gif)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<br />
 
-### Code Splitting
+#### 2) Todo 추가
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- 추가 버튼을 클릭하여 Todo 추가
+- 추가한 Todo는 목록에 실시간으로 반영
 
-### Analyzing the Bundle Size
+![할 일 추가](https://user-images.githubusercontent.com/81166378/183240169-8a87cd08-0c90-489c-8bcb-7ffc78f9b832.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<br />
 
-### Making a Progressive Web App
+#### 3) Todo 수정
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- 수정 버튼을 클릭하면 수정 모드 활성화
+- 수정한 내용 반영 또는 취소
+- 수정한 내용은 목록에 실시간으로 반영
 
-### Advanced Configuration
+![할 일 수정](https://user-images.githubusercontent.com/81166378/183240182-ba8804d3-e5a0-416d-8a81-e26c71a62d15.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<br />
 
-### Deployment
+#### 4) Todo 삭제
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- 삭제 버튼을 클릭하면 해당 Todo 삭제
+- 삭제한 내용은 목록에 실시간으로 반영
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![할 일 삭제](https://user-images.githubusercontent.com/81166378/183240198-1d1ae0db-ea1a-489f-9766-1f007f6487ed.gif)
