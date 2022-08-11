@@ -11,6 +11,7 @@ import Modal from "components/Modal";
 import { BasicButton, ColorButton } from "components/ButtonSet";
 
 import { apiGetTodoById, apiGetTodos } from "apis/todos";
+import { Todo } from "types/todo";
 
 export const FORM_FLAG = {
   CREATE: "할 일 추가",
@@ -23,7 +24,7 @@ export default function TodoList() {
   const navigate = useNavigate();
 
   const [todoList, setTodoList] = useState([]);
-  const [todoDetail, setTodoDetail] = useState(null);
+  const [todoDetail, setTodoDetail] = useState<Todo | null>(null);
 
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [formFlag, setFormFlag] = useState(FORM_FLAG.CREATE);
@@ -42,9 +43,11 @@ export default function TodoList() {
   };
 
   const getTodoDetail = () => {
-    apiGetTodoById(todoId).then((data) => {
-      setTodoDetail(data.data);
-    });
+    if (todoId) {
+      apiGetTodoById({ id: todoId }).then((data) => {
+        setTodoDetail(data.data);
+      });
+    }
   };
 
   const onUpdate = () => {
@@ -92,7 +95,7 @@ export default function TodoList() {
         </Modal>
       )}
 
-      <Todos todoList={todoList} />
+      <Todos todos={todoList} />
       {todoDetail && (
         <TodoDetail
           todo={todoDetail}

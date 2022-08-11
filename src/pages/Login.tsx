@@ -1,39 +1,36 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { apiSignUp } from "apis/auth";
-import { validateEmail, validatePw } from "utils/validate";
+import { validateEmail } from "utils/validate";
+import { apiLogin } from "apis/auth";
 
 import styled from "styled-components";
 import theme from "styles/theme";
 import { SectionTitle } from "components/layout/SectionTitle";
-import { BasicButton, ColorButton } from "components/ButtonSet";
+import { ColorButton } from "components/ButtonSet";
 import { BasicInput } from "components/InputSet";
 
-export default function SignUp() {
+export default function Login() {
   const navigate = useNavigate();
 
   const [inputEmail, setInputEmail] = useState("");
   const [inputPw, setInputPw] = useState("");
-  const [inputPwConfirm, setInputPwConfirm] = useState("");
 
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPw, setIsValidPw] = useState(false);
-  const [isValidPwConfirm, setIsValidPwConfirm] = useState(false);
 
   const [textValidEmail, setTextValidEmail] = useState("");
   const [textValidPw, setTextValidPw] = useState("");
-  const [textValidPwConfirm, setTextValidPwConfirm] = useState("");
 
   const isValidAll = useMemo(() => {
-    return isValidEmail && isValidPw && isValidPwConfirm;
-  }, [isValidEmail, isValidPw, isValidPwConfirm]);
+    return isValidEmail && isValidPw;
+  }, [isValidEmail, isValidPw]);
 
-  const handleInputEmail = (e) => {
+  const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputEmail(e.target.value);
 
     if (!validateEmail(e.target.value)) {
-      setTextValidEmail("이메일 형식이 올바르지 않아요 :(");
+      setTextValidEmail("이메일을 입력해야 해요 :)");
       setIsValidEmail(false);
     } else {
       setTextValidEmail("");
@@ -41,34 +38,24 @@ export default function SignUp() {
     }
   };
 
-  const handleInputPw = (e) => {
+  const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputPw(e.target.value);
 
-    if (!validatePw(e.target.value)) {
-      setTextValidPw("비밀번호는 8자 이상 입력해주세요!");
-      setIsValidPw(false);
-    } else {
+    if (e.target.value) {
       setTextValidPw("");
       setIsValidPw(true);
-    }
-  };
-
-  const handleInputPwConfirm = (e) => {
-    setInputPwConfirm(e.target.value);
-  };
-
-  useEffect(() => {
-    if (inputPw !== inputPwConfirm) {
-      setTextValidPwConfirm("비밀번호가 일치하지 않아요 :( 다시 입력해주세요!");
-      setIsValidPwConfirm(false);
     } else {
-      setTextValidPwConfirm("");
-      setIsValidPwConfirm(true);
+      setTextValidPw("비밀번호를 입력해주세요!");
+      setIsValidPw(false);
     }
-  }, [inputPw, inputPwConfirm]);
+  };
 
-  const signUp = () => {
-    apiSignUp(inputEmail, inputPw)
+  const moveToSignUp = () => {
+    navigate("/signup");
+  };
+
+  const login = () => {
+    apiLogin({ email: inputEmail, password: inputPw })
       .then((data) => {
         localStorage.setItem("token", data.token);
         navigate("/");
@@ -78,13 +65,9 @@ export default function SignUp() {
       });
   };
 
-  const moveToLogin = () => {
-    navigate("/auth");
-  };
-
   return (
     <div>
-      <SectionTitle>회원가입</SectionTitle>
+      <SectionTitle>로그인</SectionTitle>
       <BasicInput
         type="text"
         value={inputEmail}
@@ -101,33 +84,23 @@ export default function SignUp() {
       />
       <StyledText>{textValidPw}</StyledText>
 
-      <BasicInput
-        type="password"
-        value={inputPwConfirm}
-        onChange={handleInputPwConfirm}
-        placeholder="비밀번호 확인"
-      />
-      <StyledText>{textValidPwConfirm}</StyledText>
-
       <ButtonBox>
         <ColorButton
           color={isValidAll ? theme.colors.blue : theme.colors.grey10}
           disabled={!isValidAll}
-          onClick={signUp}
+          onClick={login}
         >
-          회원가입
+          로그인
         </ColorButton>
-        <BasicButton onClick={moveToLogin}>
-          이미 가입했다면? 로그인하러 가기
-        </BasicButton>
+        <ColorButton color={theme.colors.red} onClick={moveToSignUp}>
+          회원가입하러 가기
+        </ColorButton>
       </ButtonBox>
     </div>
   );
 }
 
 const ButtonBox = styled.div`
-  text-align: center;
-
   ${ColorButton} {
     width: 100%;
     margin-bottom: ${(props) => props.theme.boxSize.micro};

@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import theme from "styles/theme";
-import { BasicButton } from "components/ButtonSet";
 
 export default function MainHeader() {
   return (

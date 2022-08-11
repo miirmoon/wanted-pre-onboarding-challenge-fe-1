@@ -1,11 +1,16 @@
 import TodoItem from "./TodoItem";
 import styled from "styled-components";
+import { Todo } from "types/todo";
 
-export default function Todos({ todoList }) {
+type TodosProps = {
+  todos: Todo[];
+};
+
+export default function Todos({ todos }: TodosProps) {
   return (
     <TodosBox>
       <ul>
-        {todoList.map((todo) => (
+        {todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} />
         ))}
       </ul>

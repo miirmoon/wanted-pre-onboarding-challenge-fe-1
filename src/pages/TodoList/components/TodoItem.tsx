@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Todo } from "types/todo";
 
-export default function TodoItem({ todo }) {
+type TodoItemProps = {
+  todo: Todo;
+};
+
+export default function TodoItem({ todo }: TodoItemProps) {
   const navigate = useNavigate();
 
   const onClickTodo = () => {

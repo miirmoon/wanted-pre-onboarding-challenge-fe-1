@@ -60,3 +60,12 @@ const theme = {
 };
 
 export default theme;
+
+export type ColorsTypes = typeof colors;
+export type FontSizeTypes = typeof fontSize;
+export type FontWeightTypes = typeof fontWeight;
+export type BoxSizeTypes = typeof boxSize;
+export type ShadowTypes = typeof shadow;
+export type MediaSizeTypes = typeof mediaSize;
+
+export type UnionColorsTypes = keyof typeof colors;

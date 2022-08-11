@@ -8,14 +8,28 @@ import { ColorButton } from "components/ButtonSet";
 import { BasicInput, BasicTextArea } from "components/InputSet";
 
 import { FORM_FLAG } from "..";
+import { Todo } from "types/todo";
 
-export default function TodoForm({ todo, flag, onUpdate, onClose }) {
+type TodoFormProps = {
+  todo: Todo | null;
+  flag: string;
+  onUpdate: () => void;
+  onClose: () => void;
+};
+
+export default function TodoForm({
+  todo,
+  flag,
+  onUpdate,
+  onClose,
+}: TodoFormProps) {
   const navigate = useNavigate();
 
   const [inputTitle, setInputTitle] = useState("");
   const [inputContent, setInputContent] = useState("");
 
   useEffect(() => {
+    if (!todo) return;
     if (flag === FORM_FLAG.UPDATE) {
       setInputTitle(todo.title);
       setInputContent(todo.content);
@@ -25,26 +39,32 @@ export default function TodoForm({ todo, flag, onUpdate, onClose }) {
     }
   }, [flag]);
 
-  const handleInputTitle = (e) => {
+  const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputTitle(e.target.value);
   };
 
-  const handleInputContent = (e) => {
+  const handleInputContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputContent(e.target.value);
   };
 
   const createTodo = () => {
-    apiCreateTodo(inputTitle, inputContent).then((data) => {
+    apiCreateTodo({ title: inputTitle, content: inputContent }).then((data) => {
       navigate(`/${data.data.id}`);
       onClose();
     });
   };
 
   const updateTodo = () => {
-    apiUpdateTodo(todo.id, inputTitle, inputContent).then((data) => {
-      onUpdate();
-      onClose();
-    });
+    if (todo) {
+      apiUpdateTodo({
+        id: todo.id,
+        title: inputTitle,
+        content: inputContent,
+      }).then(() => {
+        onUpdate();
+        onClose();
+      });
+    }
   };
 
   return (

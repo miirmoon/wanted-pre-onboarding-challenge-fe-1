@@ -3,7 +3,12 @@ import styled from "styled-components";
 import { Container } from "components/layout/Container";
 import { MdClose } from "react-icons/md";
 
-export default function Modal({ children, onClose }) {
+type ModalProps = {
+  children: React.ReactNode;
+  onClose: () => void;
+};
+
+export default function Modal({ children, onClose }: ModalProps) {
   useEffect(() => {
     document.body.style.cssText = `overflow: hidden`;
     return () => {
@@ -11,7 +16,7 @@ export default function Modal({ children, onClose }) {
     };
   });
 
-  const onDimClick = (e) => {
+  const onDimClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) onClose();
   };
 

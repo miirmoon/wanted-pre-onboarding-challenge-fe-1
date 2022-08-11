@@ -4,30 +4,47 @@ import { apiDeleteTodo } from "apis/todos";
 import styled from "styled-components";
 import theme from "styles/theme";
 import { ColorButton } from "components/ButtonSet";
+import { Todo } from "types/todo";
 
-export default function TodoDetail({ todo, onDelete, onClickUpdate }) {
+type TodoDetailProps = {
+  todo: Todo | null;
+  onDelete: () => void;
+  onClickUpdate: () => void;
+};
+
+export default function TodoDetail({
+  todo,
+  onDelete,
+  onClickUpdate,
+}: TodoDetailProps) {
   const navigate = useNavigate();
 
   const deleteTodo = () => {
-    apiDeleteTodo(todo.id).then(() => {
-      onDelete();
-      navigate("/");
-    });
+    if (todo) {
+      apiDeleteTodo({ id: todo.id }).then(() => {
+        onDelete();
+        navigate("/");
+      });
+    }
   };
 
   return (
     <DetailBox>
-      <StyledTitle>{todo.title}</StyledTitle>
-      <StyledContent>{todo.content}</StyledContent>
+      {todo && (
+        <>
+          <StyledTitle>{todo.title}</StyledTitle>
+          <StyledContent>{todo.content}</StyledContent>
 
-      <ButtonBox>
-        <ColorButton color={theme.colors.yellow} onClick={onClickUpdate}>
-          수정
-        </ColorButton>
-        <ColorButton color={theme.colors.red} onClick={deleteTodo}>
-          삭제
-        </ColorButton>
-      </ButtonBox>
+          <ButtonBox>
+            <ColorButton color={theme.colors.yellow} onClick={onClickUpdate}>
+              수정
+            </ColorButton>
+            <ColorButton color={theme.colors.red} onClick={deleteTodo}>
+              삭제
+            </ColorButton>
+          </ButtonBox>
+        </>
+      )}
     </DetailBox>
   );
 }
