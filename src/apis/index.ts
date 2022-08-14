@@ -9,19 +9,26 @@ export const apiAxios = axios.create({
   },
 });
 
-export const authApiAxios = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-type": "application/json",
-  },
-});
-
-authApiAxios.interceptors.request.use((config) => {
+apiAxios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
-  if (config.headers) {
+  if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
 });
+
+apiAxios.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (axios.isAxiosError(err)) {
+      alert(err.message);
+    } else {
+      alert(
+        "예기치 못한 오류가 발생했습니다. 잠시 후 다시 시도해 주시기 바랍니다."
+      );
+    }
+    return Promise.reject(err);
+  }
+);

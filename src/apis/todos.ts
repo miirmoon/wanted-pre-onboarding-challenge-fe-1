@@ -1,16 +1,16 @@
-import { authApiAxios } from "apis";
+import { apiAxios } from "apis";
 import { TodoParams, CreateTodoParams, UpdateTodoParams } from "types/todo";
 
 export const apiGetTodos = async () => {
-  return (await authApiAxios.get(`/todos`)).data;
+  return (await apiAxios.get(`/todos`)).data;
 };
 
 export const apiGetTodoById = async ({ id }: TodoParams) => {
-  return (await authApiAxios.get(`/todos/${id}`)).data;
+  return (await apiAxios.get(`/todos/${id}`)).data;
 };
 
 export const apiCreateTodo = async ({ title, content }: CreateTodoParams) => {
-  return (await authApiAxios.post(`/todos`, { title, content })).data;
+  return (await apiAxios.post(`/todos`, { title, content })).data;
 };
 
 export const apiUpdateTodo = async ({
@@ -18,9 +18,9 @@ export const apiUpdateTodo = async ({
   title,
   content,
 }: UpdateTodoParams) => {
-  return (await authApiAxios.put(`/todos/${id}`, { title, content })).data;
+  return (await apiAxios.put(`/todos/${id}`, { title, content })).data;
 };
 
 export const apiDeleteTodo = async ({ id }: TodoParams) => {
-  return (await authApiAxios.delete(`/todos/${id}`)).data;
+  return (await apiAxios.delete(`/todos/${id}`)).data;
 };

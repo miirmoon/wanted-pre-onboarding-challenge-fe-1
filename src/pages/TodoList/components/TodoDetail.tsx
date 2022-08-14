@@ -5,6 +5,7 @@ import styled from "styled-components";
 import theme from "styles/theme";
 import { ColorButton } from "components/ButtonSet";
 import { Todo } from "types/todo";
+import { AxiosError } from "axios";
 
 type TodoDetailProps = {
   todo: Todo | null;
