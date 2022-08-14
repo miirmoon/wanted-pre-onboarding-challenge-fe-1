@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { validateEmail } from "utils/validate";
 import { apiLogin } from "apis/auth";
+import useInput from "hooks/useInput";
 
 import styled from "styled-components";
 import theme from "styles/theme";
@@ -13,42 +14,35 @@ import { BasicInput } from "components/InputSet";
 export default function Login() {
   const navigate = useNavigate();
 
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPassword, setInputPassword] = useState("");
-
-  const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [inputEmail, setInputEmail] = useInput("");
+  const [inputPassword, setInputPassword] = useInput("");
 
   const [alertValidEmail, setAlertValidEmail] = useState("");
   const [alertValidPassword, setAlertValidPassword] = useState("");
 
+  const isValidEmail = useMemo(() => {
+    if (validateEmail(inputEmail)) {
+      setAlertValidEmail("");
+      return true;
+    } else {
+      setAlertValidEmail("이메일을 입력해야 해요 :)");
+      return false;
+    }
+  }, [inputEmail]);
+
+  const isValidPassword = useMemo(() => {
+    if (inputPassword) {
+      setAlertValidPassword("");
+      return true;
+    } else {
+      setAlertValidPassword("비밀번호를 입력해주세요!");
+      return false;
+    }
+  }, [inputPassword]);
+
   const isValidAll = useMemo(() => {
     return isValidEmail && isValidPassword;
   }, [isValidEmail, isValidPassword]);
-
-  const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputEmail(e.target.value);
-
-    if (!validateEmail(e.target.value)) {
-      setAlertValidEmail("이메일을 입력해야 해요 :)");
-      setIsValidEmail(false);
-    } else {
-      setAlertValidEmail("");
-      setIsValidEmail(true);
-    }
-  };
-
-  const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPassword(e.target.value);
-
-    if (e.target.value) {
-      setAlertValidPassword("");
-      setIsValidPassword(true);
-    } else {
-      setAlertValidPassword("비밀번호를 입력해주세요!");
-      setIsValidPassword(false);
-    }
-  };
 
   const moveToSignUp = () => {
     navigate("/signup");
@@ -71,7 +65,7 @@ export default function Login() {
       <BasicInput
         type="text"
         value={inputEmail}
-        onChange={handleInputEmail}
+        onChange={setInputEmail}
         placeholder="이메일"
       />
       <ValidAlert>{alertValidEmail}</ValidAlert>
@@ -79,7 +73,7 @@ export default function Login() {
       <BasicInput
         type="password"
         value={inputPassword}
-        onChange={handleInputPassword}
+        onChange={setInputPassword}
         placeholder="비밀번호"
       />
       <ValidAlert>{alertValidPassword}</ValidAlert>

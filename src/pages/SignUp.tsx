@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useInput from "hooks/useInput";
 
 import { apiSignUp } from "apis/auth";
 import { validateEmail, validatePassword } from "utils/validate";
@@ -7,70 +8,54 @@ import { validateEmail, validatePassword } from "utils/validate";
 import styled from "styled-components";
 import theme from "styles/theme";
 import { SectionTitle } from "components/layout/SectionTitle";
-import { BasicButton, ColorButton } from "components/ButtonSet";
 import { BasicInput } from "components/InputSet";
+import { BasicButton, ColorButton } from "components/ButtonSet";
 
 export default function SignUp() {
   const navigate = useNavigate();
 
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPassword, setInputPassword] = useState("");
-  const [inputPasswordConfirm, setInputPasswordConfirm] = useState("");
-
-  const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [isValidPasswordConfirm, setIsValidPasswordConfirm] = useState(false);
+  const [inputEmail, setInputEmail] = useInput("");
+  const [inputPassword, setInputPassword] = useInput("");
+  const [inputPasswordConfirm, setInputPasswordConfirm] = useInput("");
 
   const [alertValidEmail, setAlertValidEmail] = useState("");
   const [alertValidPassword, setAlertValidPassword] = useState("");
   const [alertValidPasswordConfirm, setAlertValidPasswordConfirm] =
     useState("");
 
-  const isValidAll = useMemo(() => {
-    return isValidEmail && isValidPassword && isValidPasswordConfirm;
-  }, [isValidEmail, isValidPassword, isValidPasswordConfirm]);
-
-  const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputEmail(e.target.value);
-
-    if (!validateEmail(e.target.value)) {
-      setAlertValidEmail("이메일 형식이 올바르지 않아요 :(");
-      setIsValidEmail(false);
-    } else {
+  const isValidEmail = useMemo(() => {
+    if (validateEmail(inputEmail)) {
       setAlertValidEmail("");
-      setIsValidEmail(true);
-    }
-  };
-
-  const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPassword(e.target.value);
-
-    if (!validatePassword(e.target.value)) {
-      setAlertValidPassword("비밀번호는 8자 이상 입력해주세요!");
-      setIsValidPassword(false);
+      return true;
     } else {
-      setAlertValidPassword("");
-      setIsValidPassword(true);
+      setAlertValidEmail("이메일 형식이 올바르지 않아요 :(");
+      return false;
     }
-  };
+  }, [inputEmail]);
 
-  const handleInputPasswordConfirm = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setInputPasswordConfirm(e.target.value);
-  };
+  const isValidPassword = useMemo(() => {
+    if (validatePassword(inputEmail)) {
+      setAlertValidPassword("");
+      return true;
+    } else {
+      setAlertValidPassword("비밀번호는 8자 이상 입력해주세요!");
+      return false;
+    }
+  }, [inputPassword]);
 
-  useEffect(() => {
+  const isValidPasswordConfirm = useMemo(() => {
     if (inputPassword !== inputPasswordConfirm) {
       setAlertValidPasswordConfirm(
         "비밀번호가 일치하지 않아요 :( 다시 입력해주세요!"
       );
-      setIsValidPasswordConfirm(false);
     } else {
       setAlertValidPasswordConfirm("");
-      setIsValidPasswordConfirm(true);
     }
   }, [inputPassword, inputPasswordConfirm]);
+
+  const isValidAll = useMemo(() => {
+    return isValidEmail && isValidPassword && isValidPasswordConfirm;
+  }, [isValidEmail, isValidPassword, isValidPasswordConfirm]);
 
   const signUp = () => {
     apiSignUp({ email: inputEmail, password: inputPassword })
@@ -93,7 +78,7 @@ export default function SignUp() {
       <BasicInput
         type="text"
         value={inputEmail}
-        onChange={handleInputEmail}
+        onChange={setInputEmail}
         placeholder="이메일"
       />
       <ValidAlert>{alertValidEmail}</ValidAlert>
@@ -101,7 +86,7 @@ export default function SignUp() {
       <BasicInput
         type="password"
         value={inputPassword}
-        onChange={handleInputPassword}
+        onChange={setInputPassword}
         placeholder="비밀번호"
       />
       <ValidAlert>{alertValidPassword}</ValidAlert>
@@ -109,7 +94,7 @@ export default function SignUp() {
       <BasicInput
         type="password"
         value={inputPasswordConfirm}
-        onChange={handleInputPasswordConfirm}
+        onChange={setInputPasswordConfirm}
         placeholder="비밀번호 확인"
       />
       <ValidAlert>{alertValidPasswordConfirm}</ValidAlert>

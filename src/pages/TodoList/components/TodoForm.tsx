@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiCreateTodo, apiUpdateTodo } from "apis/todos";
+import useInput from "hooks/useInput";
 
 import styled from "styled-components";
 import theme from "styles/theme";
@@ -25,27 +25,12 @@ export default function TodoForm({
 }: TodoFormProps) {
   const navigate = useNavigate();
 
-  const [inputTitle, setInputTitle] = useState("");
-  const [inputContent, setInputContent] = useState("");
-
-  useEffect(() => {
-    if (!todo) return;
-    if (flag === FORM_FLAG.UPDATE) {
-      setInputTitle(todo.title);
-      setInputContent(todo.content);
-    } else if (flag === FORM_FLAG.CREATE) {
-      setInputTitle("");
-      setInputContent("");
-    }
-  }, [todo, flag]);
-
-  const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputTitle(e.target.value);
-  };
-
-  const handleInputContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputContent(e.target.value);
-  };
+  const [inputTitle, setInputTitle] = useInput(
+    todo && flag === FORM_FLAG.UPDATE ? todo.title : ""
+  );
+  const [inputContent, setInputContent] = useInput(
+    todo && flag === FORM_FLAG.UPDATE ? todo.content : ""
+  );
 
   const createTodo = () => {
     apiCreateTodo({ title: inputTitle, content: inputContent }).then((data) => {
@@ -75,7 +60,7 @@ export default function TodoForm({
         type="text"
         id="title"
         value={inputTitle}
-        onChange={handleInputTitle}
+        onChange={setInputTitle}
       />
 
       <InputLabel htmlFor="content">내용</InputLabel>
@@ -83,7 +68,7 @@ export default function TodoForm({
         name="content"
         id="content"
         value={inputContent}
-        onChange={handleInputContent}
+        onChange={setInputContent}
       ></BasicTextArea>
 
       <ButtonBox>
