@@ -4,9 +4,9 @@ const validateEmail = (email: string) => {
   return regex.test(email);
 };
 
-const validatePw = (pw: string) => {
+const validatePassword = (password: string) => {
   const MAX_LENGTH = 8;
-  return pw.length >= MAX_LENGTH;
+  return password.length >= MAX_LENGTH;
 };
 
-export { validateEmail, validatePw };
+export { validateEmail, validatePassword };

@@ -37,7 +37,7 @@ export default function TodoForm({
       setInputTitle("");
       setInputContent("");
     }
-  }, [flag]);
+  }, [todo, flag]);
 
   const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputTitle(e.target.value);
@@ -68,9 +68,9 @@ export default function TodoForm({
   };
 
   return (
-    <FormBox>
-      <StyledTitle>{flag}</StyledTitle>
-      <StyledLabel htmlFor="title">제목</StyledLabel>
+    <TodoFormBox>
+      <TodoFormTitle>{flag}</TodoFormTitle>
+      <InputLabel htmlFor="title">제목</InputLabel>
       <BasicInput
         type="text"
         id="title"
@@ -78,7 +78,7 @@ export default function TodoForm({
         onChange={handleInputTitle}
       />
 
-      <StyledLabel htmlFor="content">내용</StyledLabel>
+      <InputLabel htmlFor="content">내용</InputLabel>
       <BasicTextArea
         name="content"
         id="content"
@@ -102,11 +102,11 @@ export default function TodoForm({
           </ColorButton>
         )}
       </ButtonBox>
-    </FormBox>
+    </TodoFormBox>
   );
 }
 
-const FormBox = styled.div`
+const TodoFormBox = styled.div`
   height: 90%;
 `;
 
@@ -119,12 +119,12 @@ const ButtonBox = styled.div`
   }
 `;
 
-const StyledTitle = styled.h2`
+const TodoFormTitle = styled.h2`
   margin: ${(props) => props.theme.boxSize.normal};
   text-align: center;
 `;
 
-const StyledLabel = styled.label`
+const InputLabel = styled.label`
   display: block;
   margin: ${(props) => props.theme.boxSize.small} 0
     ${(props) => props.theme.boxSize.micro};

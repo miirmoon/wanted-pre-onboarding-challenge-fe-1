@@ -29,11 +29,11 @@ export default function TodoDetail({
   };
 
   return (
-    <DetailBox>
+    <TodoDetailBox>
       {todo && (
         <>
-          <StyledTitle>{todo.title}</StyledTitle>
-          <StyledContent>{todo.content}</StyledContent>
+          <TodoTitle>{todo.title}</TodoTitle>
+          <TodoContent>{todo.content}</TodoContent>
 
           <ButtonBox>
             <ColorButton color={theme.colors.yellow} onClick={onClickUpdate}>
@@ -45,11 +45,11 @@ export default function TodoDetail({
           </ButtonBox>
         </>
       )}
-    </DetailBox>
+    </TodoDetailBox>
   );
 }
 
-const DetailBox = styled.div`
+const TodoDetailBox = styled.div`
   padding: ${(props) => props.theme.boxSize.micro};
   margin: ${(props) => props.theme.boxSize.small} 0;
   border-radius: 5px;
@@ -65,11 +65,11 @@ const ButtonBox = styled.div`
   }
 `;
 
-const StyledTitle = styled.h3`
+const TodoTitle = styled.h3`
   margin: ${(props) => props.theme.boxSize.micro};
 `;
 
-const StyledContent = styled.div`
+const TodoContent = styled.div`
   padding: ${(props) => props.theme.boxSize.micro};
   margin: ${(props) => props.theme.boxSize.small} 0;
   border-radius: 5px;

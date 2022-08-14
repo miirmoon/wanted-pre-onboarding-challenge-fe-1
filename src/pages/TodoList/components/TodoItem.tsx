@@ -13,10 +13,10 @@ export default function TodoItem({ todo }: TodoItemProps) {
     navigate(`/${todo.id}`);
   };
 
-  return <TodoLiseBox onClick={onClickTodo}>{todo.title}</TodoLiseBox>;
+  return <TodoItemBox onClick={onClickTodo}>{todo.title}</TodoItemBox>;
 }
 
-const TodoLiseBox = styled.li`
+const TodoItemBox = styled.li`
   padding: ${(props) => props.theme.boxSize.micro};
   margin: ${(props) => props.theme.boxSize.small} 0;
   border-radius: 5px;

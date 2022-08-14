@@ -14,39 +14,39 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [inputEmail, setInputEmail] = useState("");
-  const [inputPw, setInputPw] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
 
   const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPw, setIsValidPw] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
 
-  const [textValidEmail, setTextValidEmail] = useState("");
-  const [textValidPw, setTextValidPw] = useState("");
+  const [alertValidEmail, setAlertValidEmail] = useState("");
+  const [alertValidPassword, setAlertValidPassword] = useState("");
 
   const isValidAll = useMemo(() => {
-    return isValidEmail && isValidPw;
-  }, [isValidEmail, isValidPw]);
+    return isValidEmail && isValidPassword;
+  }, [isValidEmail, isValidPassword]);
 
   const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputEmail(e.target.value);
 
     if (!validateEmail(e.target.value)) {
-      setTextValidEmail("이메일을 입력해야 해요 :)");
+      setAlertValidEmail("이메일을 입력해야 해요 :)");
       setIsValidEmail(false);
     } else {
-      setTextValidEmail("");
+      setAlertValidEmail("");
       setIsValidEmail(true);
     }
   };
 
-  const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPw(e.target.value);
+  const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputPassword(e.target.value);
 
     if (e.target.value) {
-      setTextValidPw("");
-      setIsValidPw(true);
+      setAlertValidPassword("");
+      setIsValidPassword(true);
     } else {
-      setTextValidPw("비밀번호를 입력해주세요!");
-      setIsValidPw(false);
+      setAlertValidPassword("비밀번호를 입력해주세요!");
+      setIsValidPassword(false);
     }
   };
 
@@ -55,7 +55,7 @@ export default function Login() {
   };
 
   const login = () => {
-    apiLogin({ email: inputEmail, password: inputPw })
+    apiLogin({ email: inputEmail, password: inputPassword })
       .then((data) => {
         localStorage.setItem("token", data.token);
         navigate("/");
@@ -74,15 +74,15 @@ export default function Login() {
         onChange={handleInputEmail}
         placeholder="이메일"
       />
-      <StyledText>{textValidEmail}</StyledText>
+      <StyledText>{alertValidEmail}</StyledText>
 
       <BasicInput
         type="password"
-        value={inputPw}
-        onChange={handleInputPw}
+        value={inputPassword}
+        onChange={handleInputPassword}
         placeholder="비밀번호"
       />
-      <StyledText>{textValidPw}</StyledText>
+      <StyledText>{alertValidPassword}</StyledText>
 
       <ButtonBox>
         <ColorButton

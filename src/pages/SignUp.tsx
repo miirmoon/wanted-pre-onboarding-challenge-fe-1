@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { apiSignUp } from "apis/auth";
-import { validateEmail, validatePw } from "utils/validate";
+import { validateEmail, validatePassword } from "utils/validate";
 
 import styled from "styled-components";
 import theme from "styles/theme";
@@ -14,61 +14,66 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const [inputEmail, setInputEmail] = useState("");
-  const [inputPw, setInputPw] = useState("");
-  const [inputPwConfirm, setInputPwConfirm] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+  const [inputPasswordConfirm, setInputPasswordConfirm] = useState("");
 
   const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPw, setIsValidPw] = useState(false);
-  const [isValidPwConfirm, setIsValidPwConfirm] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [isValidPasswordConfirm, setIsValidPasswordConfirm] = useState(false);
 
-  const [textValidEmail, setTextValidEmail] = useState("");
-  const [textValidPw, setTextValidPw] = useState("");
-  const [textValidPwConfirm, setTextValidPwConfirm] = useState("");
+  const [alertValidEmail, setAlertValidEmail] = useState("");
+  const [alertValidPassword, setAlertValidPassword] = useState("");
+  const [alertValidPasswordConfirm, setAlertValidPasswordConfirm] =
+    useState("");
 
   const isValidAll = useMemo(() => {
-    return isValidEmail && isValidPw && isValidPwConfirm;
-  }, [isValidEmail, isValidPw, isValidPwConfirm]);
+    return isValidEmail && isValidPassword && isValidPasswordConfirm;
+  }, [isValidEmail, isValidPassword, isValidPasswordConfirm]);
 
   const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputEmail(e.target.value);
 
     if (!validateEmail(e.target.value)) {
-      setTextValidEmail("이메일 형식이 올바르지 않아요 :(");
+      setAlertValidEmail("이메일 형식이 올바르지 않아요 :(");
       setIsValidEmail(false);
     } else {
-      setTextValidEmail("");
+      setAlertValidEmail("");
       setIsValidEmail(true);
     }
   };
 
-  const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPw(e.target.value);
+  const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputPassword(e.target.value);
 
-    if (!validatePw(e.target.value)) {
-      setTextValidPw("비밀번호는 8자 이상 입력해주세요!");
-      setIsValidPw(false);
+    if (!validatePassword(e.target.value)) {
+      setAlertValidPassword("비밀번호는 8자 이상 입력해주세요!");
+      setIsValidPassword(false);
     } else {
-      setTextValidPw("");
-      setIsValidPw(true);
+      setAlertValidPassword("");
+      setIsValidPassword(true);
     }
   };
 
-  const handleInputPwConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPwConfirm(e.target.value);
+  const handleInputPasswordConfirm = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputPasswordConfirm(e.target.value);
   };
 
   useEffect(() => {
-    if (inputPw !== inputPwConfirm) {
-      setTextValidPwConfirm("비밀번호가 일치하지 않아요 :( 다시 입력해주세요!");
-      setIsValidPwConfirm(false);
+    if (inputPassword !== inputPasswordConfirm) {
+      setAlertValidPasswordConfirm(
+        "비밀번호가 일치하지 않아요 :( 다시 입력해주세요!"
+      );
+      setIsValidPasswordConfirm(false);
     } else {
-      setTextValidPwConfirm("");
-      setIsValidPwConfirm(true);
+      setAlertValidPasswordConfirm("");
+      setIsValidPasswordConfirm(true);
     }
-  }, [inputPw, inputPwConfirm]);
+  }, [inputPassword, inputPasswordConfirm]);
 
   const signUp = () => {
-    apiSignUp({ email: inputEmail, password: inputPw })
+    apiSignUp({ email: inputEmail, password: inputPassword })
       .then((data) => {
         localStorage.setItem("token", data.token);
         navigate("/");
@@ -91,23 +96,23 @@ export default function SignUp() {
         onChange={handleInputEmail}
         placeholder="이메일"
       />
-      <StyledText>{textValidEmail}</StyledText>
+      <ValidAlert>{alertValidEmail}</ValidAlert>
 
       <BasicInput
         type="password"
-        value={inputPw}
-        onChange={handleInputPw}
+        value={inputPassword}
+        onChange={handleInputPassword}
         placeholder="비밀번호"
       />
-      <StyledText>{textValidPw}</StyledText>
+      <ValidAlert>{alertValidPassword}</ValidAlert>
 
       <BasicInput
         type="password"
-        value={inputPwConfirm}
-        onChange={handleInputPwConfirm}
+        value={inputPasswordConfirm}
+        onChange={handleInputPasswordConfirm}
         placeholder="비밀번호 확인"
       />
-      <StyledText>{textValidPwConfirm}</StyledText>
+      <ValidAlert>{alertValidPasswordConfirm}</ValidAlert>
 
       <ButtonBox>
         <ColorButton
@@ -136,7 +141,7 @@ const ButtonBox = styled.div`
   }
 `;
 
-const StyledText = styled.div`
+const ValidAlert = styled.div`
   margin: ${(props) => props.theme.boxSize.micro} 0
     ${(props) => props.theme.boxSize.small} 0;
   font-size: ${(props) => props.theme.fontSize.small};
