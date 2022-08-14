@@ -74,7 +74,7 @@ export default function Login() {
         onChange={handleInputEmail}
         placeholder="이메일"
       />
-      <StyledText>{alertValidEmail}</StyledText>
+      <ValidAlert>{alertValidEmail}</ValidAlert>
 
       <BasicInput
         type="password"
@@ -82,7 +82,7 @@ export default function Login() {
         onChange={handleInputPassword}
         placeholder="비밀번호"
       />
-      <StyledText>{alertValidPassword}</StyledText>
+      <ValidAlert>{alertValidPassword}</ValidAlert>
 
       <ButtonBox>
         <ColorButton
@@ -109,7 +109,7 @@ const ButtonBox = styled.div`
   }
 `;
 
-const StyledText = styled.div`
+const ValidAlert = styled.div`
   margin: ${(props) => props.theme.boxSize.micro} 0
     ${(props) => props.theme.boxSize.small} 0;
   font-size: ${(props) => props.theme.fontSize.small};
