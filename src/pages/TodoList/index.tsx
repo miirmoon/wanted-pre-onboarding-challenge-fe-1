@@ -37,16 +37,24 @@ export default function TodoList() {
   }, [todoId]);
 
   const getTodoList = () => {
-    apiGetTodos().then((data) => {
-      setTodoList(data.data);
-    });
+    apiGetTodos()
+      .then((data) => {
+        setTodoList(data.data);
+      })
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   const getTodoDetail = () => {
     if (todoId) {
-      apiGetTodoById({ id: todoId }).then((data) => {
-        setTodoDetail(data.data);
-      });
+      apiGetTodoById({ id: todoId })
+        .then((data) => {
+          setTodoDetail(data.data);
+        })
+        .catch((err) => {
+          alert(err.response.data.details);
+        });
     }
   };
 

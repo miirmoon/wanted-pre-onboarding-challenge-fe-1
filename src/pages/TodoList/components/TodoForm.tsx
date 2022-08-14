@@ -33,10 +33,14 @@ export default function TodoForm({
   );
 
   const createTodo = () => {
-    apiCreateTodo({ title: inputTitle, content: inputContent }).then((data) => {
-      navigate(`/${data.data.id}`);
-      onClose();
-    });
+    apiCreateTodo({ title: inputTitle, content: inputContent })
+      .then((data) => {
+        navigate(`/${data.data.id}`);
+        onClose();
+      })
+      .catch((err) => {
+        alert(err.response.data.details);
+      });
   };
 
   const updateTodo = () => {
@@ -45,10 +49,14 @@ export default function TodoForm({
         id: todo.id,
         title: inputTitle,
         content: inputContent,
-      }).then(() => {
-        onUpdate();
-        onClose();
-      });
+      })
+        .then(() => {
+          onUpdate();
+          onClose();
+        })
+        .catch((err) => {
+          alert(err.response.data.details);
+        });
     }
   };
 

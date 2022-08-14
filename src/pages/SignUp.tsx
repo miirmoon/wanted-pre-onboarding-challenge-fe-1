@@ -61,6 +61,7 @@ export default function SignUp() {
     apiSignUp({ email: inputEmail, password: inputPassword })
       .then((data) => {
         localStorage.setItem("token", data.token);
+        alert(data.message);
         navigate("/");
       })
       .catch((err) => {

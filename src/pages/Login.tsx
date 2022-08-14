@@ -52,6 +52,7 @@ export default function Login() {
     apiLogin({ email: inputEmail, password: inputPassword })
       .then((data) => {
         localStorage.setItem("token", data.token);
+        alert(data.message);
         navigate("/");
       })
       .catch((err) => {

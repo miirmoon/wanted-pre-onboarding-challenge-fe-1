@@ -21,10 +21,14 @@ export default function TodoDetail({
 
   const deleteTodo = () => {
     if (todo) {
-      apiDeleteTodo({ id: todo.id }).then(() => {
-        onDelete();
-        navigate("/");
-      });
+      apiDeleteTodo({ id: todo.id })
+        .then(() => {
+          onDelete();
+          navigate("/");
+        })
+        .catch((err) => {
+          alert(err.response.data.details);
+        });
     }
   };
 
